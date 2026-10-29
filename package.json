@@ -2,9 +2,11 @@
   "name": "sistema_incas",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "test": "node --test"
   },
   "repository": {
     "type": "git",
@@ -19,8 +21,10 @@
   },
   "homepage": "https://github.com/alexxwasd/sistema_INCAS#readme",
   "dependencies": {
-    "cors": "^2.8.6",
+    "bcrypt": "^6.0.0",
+    "dotenv": "^18.0.9",
     "express": "^5.3.0",
+    "multer": "^2.0.2",
     "pg": "^8.23.1"
   }
 }

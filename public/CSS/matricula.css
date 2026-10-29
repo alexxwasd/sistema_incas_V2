@@ -1,0 +1,486 @@
+/* Restablece los márgenes y usa el modelo de caja uniforme en todo el formulario. */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Colores compartidos para que matrícula conserve la identidad visual de INCAS. */
+:root {
+    color-scheme: light;
+    --green-dark: #123e27;
+    --green: #16803a;
+    --green-hover: #116b30;
+    --green-title: #176b39;
+    --green-muted: #315642;
+    --page: #f3f7f4;
+    --border: #e2ebe4;
+    --text: #17251d;
+}
+
+/* Fondo exterior y tarjeta que contiene los pasos de matrícula. */
+body {
+    min-height: 100vh;
+    min-height: 100svh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 20px;
+    background:
+        radial-gradient(ellipse at 85% 0%, rgba(22, 128, 58, 0.08), transparent 34%),
+        linear-gradient(135deg, #0f172a, #152b32);
+    color: var(--text);
+}
+
+.container {
+    width: min(100%, 860px);
+    padding: clamp(24px, 5vw, 48px);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    border-radius: 24px;
+    background: #fff;
+    box-shadow: 0 24px 60px rgba(3, 12, 27, 0.35);
+}
+
+/* Encabezado de la página y su indicador visual de progreso. */
+.form-header {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin-bottom: 32px;
+}
+
+.form-header img {
+    width: 64px;
+    height: 64px;
+    flex: 0 0 auto;
+    object-fit: contain;
+}
+
+.form-header h1 {
+    color: var(--green-title);
+    font-size: clamp(24px, 4vw, 32px);
+    line-height: 1.2;
+}
+
+.form-header p {
+    margin-top: 6px;
+    color: var(--green-muted);
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.progress {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    max-width: 540px;
+    margin: 0 auto 32px;
+}
+
+.step {
+    width: 38px;
+    height: 38px;
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #dce5df;
+    border-radius: 50%;
+    background: #f5f8f6;
+    color: #6d7e73;
+    font-size: 14px;
+    font-weight: 650;
+    transition: background-color 180ms ease, border-color 180ms ease, color 180ms ease;
+}
+
+.step.active {
+    border-color: var(--green);
+    background: var(--green);
+    color: #fff;
+    box-shadow: 0 0 0 4px rgba(22, 128, 58, 0.12);
+}
+
+.line {
+    height: 2px;
+    flex: 1 1 auto;
+    border-radius: 99px;
+    background: #dce5df;
+}
+
+/* Las secciones ocultas no ocupan espacio; el paso activo usa una cuadrícula. */
+.form-step {
+    display: none;
+    animation: fade-in 220ms ease both;
+}
+
+.form-step.active {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 22px;
+    row-gap: 2px;
+}
+
+.form-step h2,
+.form-step > p,
+.form-step > .buttons,
+.form-step > .full-width {
+    grid-column: 1 / -1;
+}
+
+.full-width {
+    grid-column: 1 / -1;
+}
+
+.form-step h2 {
+    margin-bottom: 18px;
+    color: var(--green-title);
+    font-size: clamp(19px, 3vw, 24px);
+    line-height: 1.3;
+}
+
+.form-step > p {
+    margin-bottom: 8px;
+    color: var(--green-muted);
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Estilos y estados de foco para los campos de datos. */
+label {
+    display: block;
+    min-width: 0;
+    margin-bottom: 16px;
+    color: var(--green-muted);
+    font-size: 14px;
+    font-weight: 600;
+}
+
+input,
+select,
+textarea {
+    width: 100%;
+    min-height: 48px;
+    margin-top: 7px;
+    padding: 10px 14px;
+    border: 1px solid #dce5df;
+    border-radius: 12px;
+    outline: none;
+    background: #f5f8f6;
+    color: var(--text);
+    font-size: 15px;
+    transition: border-color 160ms ease, box-shadow 160ms ease, background-color 160ms ease;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    border-color: #27834c;
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(39, 131, 76, 0.14);
+}
+
+input[type="file"] {
+    padding: 8px 10px;
+    color: #52675a;
+    font-size: 13px;
+}
+
+input[type="file"]::file-selector-button {
+    margin-right: 10px;
+    padding: 7px 10px;
+    border: 0;
+    border-radius: 8px;
+    background: #e7f2e9;
+    color: var(--green-dark);
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+textarea {
+    min-height: 88px;
+    resize: vertical;
+}
+
+select:disabled {
+    cursor: not-allowed;
+    color: #75847a;
+}
+
+.form-note {
+    align-self: center;
+    margin: 0 0 16px;
+    color: #64766b;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.field-status {
+    margin: -10px 0 12px;
+    color: #8a4b12;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.field-status:empty {
+    display: none;
+}
+
+/* El resumen muestra cada etiqueta y valor antes de confirmar la solicitud. */
+.review-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 0.75fr) minmax(0, 1.25fr);
+    gap: 0;
+    overflow: hidden;
+    margin: 4px 0 18px;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    background: #f7faf8;
+}
+
+.review-grid dt,
+.review-grid dd {
+    min-width: 0;
+    padding: 10px 14px;
+    border-bottom: 1px solid #e9f0eb;
+    font-size: 13px;
+    line-height: 1.45;
+    overflow-wrap: anywhere;
+}
+
+.review-grid dt {
+    color: var(--green-muted);
+    font-weight: 650;
+}
+
+.review-grid dd {
+    color: var(--text);
+}
+
+/* Botones de navegación, mensajes de resultado y estados de confirmación. */
+.confirmation {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin: 0 0 8px;
+    color: var(--green-muted);
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.confirmation input {
+    width: 18px;
+    min-height: 18px;
+    flex: 0 0 auto;
+    margin: 2px 0 0;
+    accent-color: var(--green);
+}
+
+.submit-status {
+    min-height: 0;
+    color: #8a4b12;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.submit-status:not(:empty) {
+    margin-bottom: 8px;
+    padding: 10px 12px;
+    border: 1px solid #f0dfbd;
+    border-radius: 10px;
+    background: #fff9ed;
+}
+
+.submit-status.success {
+    border-color: #c7e5d0;
+    background: #f0faf3;
+    color: #176b39;
+}
+
+.submit-status.error {
+    border-color: #f0caca;
+    background: #fff5f5;
+    color: #9a2f2f;
+}
+
+.buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 12px;
+}
+
+button {
+    min-width: 132px;
+    min-height: 48px;
+    padding: 11px 20px;
+    border: 1px solid transparent;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 650;
+    transition: background-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+}
+
+button:hover {
+    transform: translateY(-2px);
+}
+
+button:active {
+    transform: translateY(0);
+}
+
+button:focus-visible {
+    outline: 3px solid rgba(22, 128, 58, 0.35);
+    outline-offset: 3px;
+}
+
+.btn-next,
+.btn-submit {
+    background: linear-gradient(135deg, #218e4a, var(--green));
+    color: #fff;
+    box-shadow: 0 5px 14px rgba(22, 128, 58, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+.btn-next:hover,
+.btn-submit:hover {
+    background: linear-gradient(135deg, #2a9b54, var(--green-hover));
+    box-shadow: 0 8px 18px rgba(22, 128, 58, 0.25);
+}
+
+.btn-prev {
+    border-color: var(--border);
+    background: #f5f8f6;
+    color: var(--green-dark);
+}
+
+.btn-prev:hover {
+    background: #e9f1eb;
+}
+
+/* En móvil, el formulario pasa a una columna y ajusta el espacio disponible. */
+@media (max-width: 600px) {
+    body {
+        align-items: flex-start;
+        padding: 18px 12px;
+    }
+
+    .container {
+        padding: 22px 18px;
+        border-radius: 20px;
+    }
+
+    .form-header {
+        gap: 12px;
+        margin-bottom: 24px;
+    }
+
+    .form-header img {
+        width: 52px;
+        height: 52px;
+    }
+
+    .form-header p {
+        font-size: 13px;
+    }
+
+    .progress {
+        gap: 8px;
+        margin-bottom: 24px;
+    }
+
+    .step {
+        width: 34px;
+        height: 34px;
+    }
+
+    .form-step.active {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .form-step h2,
+    .form-step > p,
+    .form-step > .buttons,
+    .form-step > .full-width {
+        grid-column: 1;
+    }
+
+    label {
+        margin-bottom: 13px;
+    }
+
+    .buttons {
+        gap: 10px;
+    }
+
+    button {
+        min-width: 0;
+        flex: 1;
+    }
+
+    .review-grid {
+        grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+    }
+
+    .review-grid dt,
+    .review-grid dd {
+        padding: 9px 10px;
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 360px) {
+    /* En móviles muy estrechos, apila el resumen y los botones para evitar desbordes. */
+    .container {
+        padding: 18px 14px;
+    }
+
+    .form-header img {
+        width: 44px;
+        height: 44px;
+    }
+
+    .form-header h1 {
+        font-size: 22px;
+    }
+
+    .buttons {
+        flex-direction: column-reverse;
+    }
+
+    .review-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .review-grid dt {
+        padding-bottom: 2px;
+        border-bottom: 0;
+    }
+
+    .review-grid dd {
+        padding-top: 2px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    /* Respeta la preferencia del sistema y casi elimina animaciones y transiciones. */
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+    }
+}

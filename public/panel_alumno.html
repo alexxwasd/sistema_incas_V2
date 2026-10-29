@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <!-- Configuración del navegador y estilos del portal del estudiante. -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#123e27">
+    <title>Portal estudiante | INCAS</title>
+    <link rel="stylesheet" href="CSS/panel_alumno.css">
+    <link rel="icon" href="resourses/logos/INCAS_logo.png">
+</head>
+<body>
+    <!-- Barra superior del portal con marca institucional y salida. -->
+    <header class="topbar">
+        <a class="brand" href="index.html" aria-label="INCAS, ir al inicio">
+            <img src="resourses/logos/INCAS_logo.png" alt="Logo de INCAS" class="brand-incas">
+            <img src="resourses/logos/MINED_logo.jpg" alt="Logo del Ministerio de Educación" class="brand-mined">
+        </a>
+        <div class="topbar-heading">
+            <h1>Portal Estudiante</h1>
+            <span id="usuario-login" class="user-display"></span>
+        </div>
+        <button class="logout-button admin-logout" id="admin-logout" type="button" data-logout>Salir</button>
+    </header>
+
+    <!-- Menú de vistas personales y área principal del estudiante. -->
+    <div class="student-layout">
+        <nav class="sidebar" aria-label="Secciones del portal">
+            <button class="nav-link active" type="button" data-view="informacion" aria-current="page">
+                Información personal
+            </button>
+            <button class="nav-link" type="button" data-view="notas">
+                Notas
+            </button>
+        </nav>
+
+        <!-- Vistas de información personal y calificaciones del estudiante. -->
+        <main class="main-content">
+            <!-- El portal carga este perfil desde alumnos y la cuenta de usuario asociada. -->
+            <section class="content-view active" id="view-informacion" aria-labelledby="title-informacion">
+                <div class="page-heading">
+                    <div>
+                        <p class="eyebrow">Mi cuenta</p>
+                        <h2 id="title-informacion">Información personal</h2>
+                    </div>
+                </div>
+
+                <div class="section-rule" aria-hidden="true"></div>
+                <div class="data-card personal-card" aria-live="polite">
+                    <dl class="personal-grid">
+                        <div class="data-item">
+                            <dt>Nombre</dt>
+                            <dd data-student-field="nombre">Información no disponible todavía.</dd>
+                        </div>
+                        <div class="data-item">
+                            <dt>Apellido</dt>
+                            <dd data-student-field="apellido">Información no disponible todavía.</dd>
+                        </div>
+                        <div class="data-item">
+                            <dt>Sección</dt>
+                            <dd data-student-field="seccion">Información no disponible todavía.</dd>
+                        </div>
+                        <div class="data-item">
+                            <dt>Correo estudiantil</dt>
+                            <dd data-student-field="correo">Información no disponible todavía.</dd>
+                        </div>
+                        <div class="data-item">
+                            <dt>Fecha de nacimiento</dt>
+                            <dd data-student-field="fecha_nac">Cargando...</dd>
+                        </div>
+                    </dl>
+                </div>
+            </section>
+
+            <!-- Solo se listan períodos finalizados que tengan notas del alumno. -->
+            <section class="content-view" id="view-notas" aria-labelledby="title-notas" hidden>
+                <div class="page-heading">
+                    <div>
+                        <p class="eyebrow">Mi progreso académico</p>
+                        <h2 id="title-notas">Notas por materia y período</h2>
+                    </div>
+                </div>
+
+                <div class="section-rule" aria-hidden="true"></div>
+                <div class="data-card grades-card">
+                    <div class="period-control">
+                        <label for="period-select">Período finalizado</label>
+                        <select id="period-select" disabled>
+                            <option value="">Cargando períodos...</option>
+                        </select>
+                    </div>
+
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th scope="col">Materia</th>
+                                    <th scope="col">Nota</th>
+                                </tr>
+                            </thead>
+                            <tbody id="grades-body">
+                                <tr>
+                                    <td class="empty-cell" colspan="2">
+                                        Selecciona un período para consultar las notas.
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Script compartido para alternar secciones y regresar al inicio. -->
+    <script src="JS/portal_navigation.js"></script>
+    <script src="JS/panel_alumno.js"></script>
+</body>
+</html>

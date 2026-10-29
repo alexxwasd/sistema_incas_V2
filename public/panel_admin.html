@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <!-- Configuración del navegador y estilos del portal administrativo. -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0f172a">
+    <title>Portal administrador | INCAS</title>
+    <link rel="stylesheet" href="CSS/panel_admin.css?v=4">
+    <link rel="icon" href="resourses/logos/INCAS_logo.png">
+</head>
+<body>
+    <!-- Barra superior compartida con los accesos de los demás roles. -->
+    <header class="topbar">
+        <a class="brand" href="index.html" aria-label="INCAS, ir al inicio">
+            <img src="resourses/logos/INCAS_logo.png" alt="Logo de INCAS" class="brand-incas">
+            <img src="resourses/logos/MINED_logo.jpg" alt="Logo del Ministerio de Educación" class="brand-mined">
+        </a>
+        <div class="topbar-heading">
+            <h1>Portal Administrador</h1>
+            <span id="usuario-login" class="user-display"></span>
+        </div>
+        <button class="logout-button admin-logout" id="admin-logout" type="button" data-logout>Salir</button>
+    </header>
+
+    <!-- Navegación lateral y vistas del panel administrativo. -->
+    <div class="admin-layout">
+        <nav class="sidebar" aria-label="Secciones del panel">
+            <button class="nav-link active" type="button" data-view="solicitudes" aria-current="page">
+                Solicitudes de matrícula
+            </button>
+            <button class="nav-link" type="button" data-view="docentes">
+                Docentes
+            </button>
+            <button class="nav-link" type="button" data-view="usuarios">
+                Usuarios
+            </button>
+            <button class="nav-link" type="button" data-view="secciones">
+                Secciones
+            </button>
+            <button class="nav-link" type="button" data-view="periodos">
+                Períodos
+            </button>
+        </nav>
+
+        <!-- Cada vista coincide con el valor data-view de su botón de navegación. -->
+        <main class="main-content">
+            <!-- Alta de cuentas docentes y asignación opcional de sección y materia. -->
+            <section class="content-view" id="view-docentes" aria-labelledby="title-docentes" hidden>
+                <h2 id="title-docentes">Docentes</h2>
+                <div class="section-rule" aria-hidden="true"></div>
+                <form class="admin-card teacher-create-form" id="teacher-create-form">
+                    <h3>Crear perfil docente</h3>
+                    <div class="teacher-form-fields">
+                        <label>
+                            DUI
+                            <input name="dui" inputmode="numeric" maxlength="10" pattern="[0-9]{8}-?[0-9]" placeholder="00000000-0" required>
+                        </label>
+                        <label>
+                            Nombre
+                            <input name="nombre" autocomplete="given-name" maxlength="50" required>
+                        </label>
+                        <label>
+                            Apellido
+                            <input name="apellido" autocomplete="family-name" maxlength="50" required>
+                        </label>
+                        <label>
+                            Teléfono
+                            <input type="text" id="input-telefono" name="telefono" placeholder="0000-0000" maxlength="20">
+                        </label>
+                        <label>
+                            Sección (opcional)
+                            <select id="select-seccion-docente" name="id_seccion">
+                                <option value="">Sin asignación por ahora</option>
+                            </select>
+                        </label>
+                        <label>
+                            Materia (opcional)
+                            <select id="select-asignatura-docente" name="id_asignatura">
+                                <option value="">Sin asignación por ahora</option>
+                            </select>
+                        </label>
+                        <label>
+                            Año lectivo (requerido si asigna sección y materia)
+                            <input type="date" name="año_lectivo">
+                        </label>
+                    </div>
+                    <button class="teacher-create-button" type="submit">Crear docente</button>
+                    <p class="initial-password-note">El DUI será el usuario y la contraseña temporal (sin guion). Al ingresar por primera vez, el docente deberá crear una contraseña personal.</p>
+                    <p class="teacher-create-status" id="teacher-create-status" role="status" aria-live="polite"></p>
+                </form>
+                <div class="admin-card table-card">
+                    <h3>Docentes registrados</h3>
+                    <div class="admin-table-wrap">
+                        <table class="admin-table" id="tabla-docentes">
+                            <thead>
+                                <tr>
+                                    <th scope="col">DUI</th>
+                                    <th scope="col">Nombre</th>
+                                    <th scope="col">Apellido</th>
+                                    <th scope="col">Usuario</th>
+                                    <th scope="col">Materias asignadas</th>
+                                </tr>
+                            </thead>
+                            <tbody id="docentes-body"><tr><td colspan="5">Cargando docentes...</td></tr></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Búsqueda de cuentas para restablecer las credenciales de sus usuarios. -->
+            <section class="content-view" id="view-usuarios" aria-labelledby="title-usuarios" hidden>
+                <h2 id="title-usuarios">Usuarios</h2>
+                <div class="section-rule" aria-hidden="true"></div>
+                <form class="admin-card account-search-form" id="account-search-form" data-account-search>
+                    <h3>Buscar alumno, encargado o docente</h3>
+                    <div class="account-search-controls">
+                        <label for="account-search-query">NIE del alumno o DUI del encargado/docente</label>
+                        <div class="account-search-input-row">
+                            <input id="account-search-query" name="identificador" type="search" autocomplete="off" maxlength="20" placeholder="Ingrese el NIE o el DUI (con o sin guion)" required>
+                            <button class="account-search-button" type="submit">Buscar</button>
+                        </div>
+                    </div>
+                    <p class="account-search-status" id="account-search-status" role="status" aria-live="polite">
+                        Busca por NIE del alumno o DUI del encargado/docente; puedes escribir el DUI con o sin guion.
+                    </p>
+                </form>
+                <div class="admin-card account-search-result" id="account-search-result" hidden>
+                    <h3>Resultado de búsqueda</h3>
+                    <dl class="application-grid" id="account-search-details"></dl>
+                    <button class="account-reset-button" type="button" disabled aria-describedby="account-reset-note">Restablecer contraseña</button>
+                    <p class="account-reset-note" id="account-reset-note">
+                        La contraseña temporal volverá a ser el NIE del alumno o los dígitos del DUI, sin guion, para encargado/docente. Al ingresar, deberá crear una contraseña personal.
+                    </p>
+                </div>
+            </section>
+
+            <!-- Creación y listado de secciones con una especialidad del catálogo. -->
+            <section class="content-view" id="view-secciones" aria-labelledby="title-secciones" hidden>
+                <h2 id="title-secciones">Secciones</h2>
+                <div class="section-rule" aria-hidden="true"></div>
+                <form class="admin-card section-create-form" id="section-create-form">
+                    <h3>Crear sección</h3>
+                    <div class="teacher-form-fields">
+                        <label>
+                            Nombre de sección
+                            <input name="nombre_seccion" maxlength="100" required>
+                        </label>
+                        <label>
+                            Especialidad
+                            <select id="select-especialidad-seccion" name="id_especialidad" required>
+                                <option value="">Cargando especialidades...</option>
+                            </select>
+                        </label>
+                    </div>
+                    <button class="teacher-create-button" type="submit">Crear sección</button>
+                    <p class="teacher-create-status" id="section-create-status" role="status" aria-live="polite"></p>
+                </form>
+                <div class="admin-card table-card">
+                    <h3>Secciones registradas</h3>
+                    <div class="admin-table-wrap">
+                        <table class="admin-table" id="tabla-secciones">
+                            <thead>
+                                <tr>
+                                    <th scope="col">ID</th>
+                                    <th scope="col">Sección</th>
+                                    <th scope="col">Especialidad</th>
+                                    <th scope="col">Alumnos</th>
+                                </tr>
+                            </thead>
+                            <tbody id="secciones-body"><tr><td colspan="4">Cargando secciones...</td></tr></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Bandeja de solicitudes con adjuntos, NIE y sección al aprobar o rechazo. -->
+            <section class="content-view active" id="view-solicitudes" aria-labelledby="title-solicitudes">
+                <h2 id="title-solicitudes">Solicitudes de matrícula</h2>
+                <div class="section-rule" aria-hidden="true"></div>
+                <div class="admin-card table-card">
+                    <div class="page-heading">
+                        <h3>Solicitudes recibidas</h3>
+                        <label for="solicitud-filter">Estado
+                            <select id="solicitud-filter">
+                                <option value="">Todas</option>
+                                <option value="pendiente" selected>Pendientes</option>
+                                <option value="aprobada">Aprobadas</option>
+                                <option value="rechazada">Rechazadas</option>
+                            </select>
+                        </label>
+                    </div>
+                    <div class="admin-table-wrap">
+                        <table class="admin-table" id="tabla-solicitudes">
+                            <thead><tr>
+                                <th scope="col">Solicitud</th><th scope="col">Estudiante</th>
+                                <th scope="col">Encargado</th><th scope="col">Documentos</th>
+                                <th scope="col">Estado</th><th scope="col">Revisión</th>
+                            </tr></thead>
+                            <tbody id="solicitudes-body"><tr><td colspan="6">Cargando solicitudes...</td></tr></tbody>
+                        </table>
+                    </div>
+                    <p class="teacher-create-status" id="solicitudes-status" role="status" aria-live="polite"></p>
+                </div>
+            </section>
+
+            <!-- La captura de notas requiere períodos activos; la secretaria los administra aquí. -->
+            <section class="content-view" id="view-periodos" aria-labelledby="title-periodos" hidden>
+                <h2 id="title-periodos">Períodos académicos</h2>
+                <div class="section-rule" aria-hidden="true"></div>
+                <form class="admin-card teacher-create-form" id="period-create-form">
+                    <h3>Crear período</h3>
+                    <div class="teacher-form-fields">
+                        <label>Nombre del período
+                            <input name="nombre_periodo" maxlength="50" required>
+                        </label>
+                        <label>Fecha de inicio
+                            <input type="date" name="fecha_inicio" required>
+                        </label>
+                        <label>Fecha de fin
+                            <input type="date" name="fecha_fin" required>
+                        </label>
+                    </div>
+                    <button class="teacher-create-button" type="submit">Crear período activo</button>
+                    <p class="teacher-create-status" id="period-status" role="status" aria-live="polite"></p>
+                </form>
+                <div class="admin-card table-card">
+                    <h3>Períodos registrados</h3>
+                    <div class="admin-table-wrap">
+                        <table class="admin-table">
+                            <thead><tr><th>Período</th><th>Inicio</th><th>Fin</th><th>Estado</th><th>Acción</th></tr></thead>
+                            <tbody id="periodos-body"><tr><td colspan="5">Cargando períodos...</td></tr></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- El script común gestiona navegación/salida; panel_admin.js conecta las operaciones. -->
+    <script src="JS/portal_navigation.js"></script>
+    <script src="JS/panel_admin.js"></script>
+</body>
+</html>

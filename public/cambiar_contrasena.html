@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <!-- Metadatos y estilos de la pantalla obligatoria de cambio de contraseña. -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0f172a">
+    <title>Crear contraseña personal | INCAS</title>
+    <link rel="stylesheet" href="CSS/cambiar_contrasena.css">
+    <link rel="icon" href="resourses/logos/INCAS_logo.png">
+</head>
+<body>
+    <!-- Formulario inicializa una contraseña personal antes de permitir usar el portal. -->
+    <main class="password-card">
+        <img src="resourses/logos/INCAS_logo.png" alt="Logo de INCAS" class="password-logo">
+        <h1>Crea tu contraseña personal</h1>
+        <p id="password-user" class="password-user">Verificando tu cuenta...</p>
+        <p class="password-help">
+            Tu contraseña temporal solo sirve para este primer ingreso. Elige una contraseña
+            personal de entre 8 y 72 caracteres.
+        </p>
+        <form id="change-password-form">
+            <label for="new-password">Nueva contraseña</label>
+            <input id="new-password" name="nueva_contrasena" type="password"
+                autocomplete="new-password" minlength="8" maxlength="72" required>
+            <label for="confirm-password">Confirma la nueva contraseña</label>
+            <input id="confirm-password" name="confirmar_contrasena" type="password"
+                autocomplete="new-password" minlength="8" maxlength="72" required>
+            <button type="submit">Guardar contraseña</button>
+            <p id="password-status" role="status" aria-live="polite"></p>
+        </form>
+        <button id="logout-button" class="logout-button" type="button">Salir</button>
+    </main>
+    <script src="JS/cambiar_contrasena.js"></script>
+</body>
+</html>

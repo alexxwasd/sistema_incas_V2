@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <!-- Configuración del navegador y recursos visuales propios de la matrícula. -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matricula/INCAS</title>
+    <link rel="stylesheet" href="CSS/matricula.css">
+    <link rel="icon" href="resourses/logos/INCAS_logo.png">
+</head>
+<body>
+    
+    <!-- El script de matrícula valida los pasos, carga especialidades y envía la solicitud a Node.js. -->
+    <main class="container">
+        <header class="form-header">
+            <img src="resourses/logos/INCAS_logo.png" alt="Logo de INCAS">
+            <div>
+                <h1>Solicitud de matrícula</h1>
+                <p>Completa los pasos para revisar el formulario de matrícula.</p>
+            </div>
+        </header>
+
+         <!-- Indicadores visuales sincronizados con el paso visible por JS/matricula.js. -->
+         <div class="progress" role="group" aria-label="Progreso de matrícula">
+            <div class="step active" aria-current="step">1</div>
+            <div class="line"></div>
+            <div class="step">2</div>
+            <div class="line"></div>
+            <div class="step">3</div>
+         </div>
+
+          <!-- El formulario se divide en datos del estudiante, encargado y confirmación. -->
+          <form class="form">
+
+             <!-- Paso 1: datos personales y especialidad asociada a la solicitud. -->
+             <section class="form-step active">
+                <h2>Información del estudiante</h2>
+
+                <label>
+                    Nombre
+                    <input type="text" name="nombre_est" autocomplete="given-name" placeholder="Ingrese su nombre" required />
+                </label>
+
+                <label>
+                    Apellido
+                    <input type="text" name="apellido_est" autocomplete="family-name" placeholder="Ingrese su apellido" required />
+                </label>
+
+                <label>
+                    Fecha de nacimiento
+                    <input type="date" name="fecha_nac_est" autocomplete="bday" required />
+                </label>
+
+                <label>
+                    Correo institucional
+                    <input type="email" name="correo_est" autocomplete="email" placeholder="Ingrese el correo institucional del alumno" required />
+                </label>
+
+                <label>
+                    Número de teléfono del alumno
+                    <input type="tel" name="telefono_est" autocomplete="tel" inputmode="tel" maxlength="16" pattern="\+?[0-9]{7,15}" title="Ingrese un número de 7 a 15 dígitos; puede iniciar con +." placeholder="Ingrese el número del alumno" required />
+                </label>
+
+                <label class="full-width">
+                    Dirección del alumno
+                    <textarea name="direccion_est" autocomplete="street-address" rows="3" placeholder="Ingrese la dirección del alumno" required></textarea>
+                </label>
+
+                <label>
+                    Tipo de bachillerato
+                    <select name="tipo_bachillerato" id="tipo-bachillerato" required>
+                        <option value="">Seleccione una opción</option>
+                        <option value="General">General</option>
+                        <option value="Técnico">Técnico</option>
+                    </select>
+                </label>
+
+                <label>
+                    Especialidad solicitada
+                    <select name="id_especialidad" id="especialidad" disabled>
+                        <option value="">Cargando especialidades...</option>
+                    </select>
+                </label>
+
+                <p class="field-status full-width" id="specialty-status" role="status" aria-live="polite"></p>
+
+                <label>
+                    Partida de nacimiento
+                    <input type="file" name="partida_nacimiento" accept="image/jpeg,image/png,image/webp" required />
+                </label>
+
+                <label>
+                    Notas del grado anterior
+                    <input type="file" name="notas_grado_anterior" accept="image/jpeg,image/png,image/webp" required />
+                </label>
+
+                <label>
+                    Carta de buena conducta
+                    <input type="file" name="carta_conducta" accept="image/jpeg,image/png,image/webp" required />
+                </label>
+
+                <div class="buttons">
+                    <button type="button" class="btn-next">Siguiente</button>
+                </div>
+
+             </section>
+
+                <!-- Paso 2: datos de contacto del representante legal. -->
+                <section class="form-step">
+                    <h2>Información del encargado</h2>
+
+                    <label>
+                        Nombre
+                        <input type="text" name="nombre_rep" autocomplete="given-name" placeholder="Ingrese el nombre" required />
+                    </label>
+
+                    <label>
+                        Apellido
+                        <input type="text" name="apellido_rep" autocomplete="family-name" placeholder="Ingrese el apellido" required />
+                    </label>
+
+                    <label>
+                        DUI
+                        <input type="text" name="dui_rep" id="dui-representante" autocomplete="off" inputmode="numeric" maxlength="10" pattern="[0-9]{8}-?[0-9]" title="Ingrese un DUI válido: 8 dígitos y un dígito verificador, con o sin guion." placeholder="00000000-0" required />
+                    </label>
+
+                    <label>
+                        Número de teléfono
+                        <input type="tel" name="telefono_rep" autocomplete="tel" inputmode="tel" maxlength="16" pattern="\+?[0-9]{7,15}" title="Ingrese un número de 7 a 15 dígitos; puede iniciar con +." placeholder="Ingrese el número del encargado" required />
+                    </label>
+
+                    <p class="form-note full-width">Los documentos seleccionados se validan en este formulario, pero no se almacenan: la tabla de solicitudes no incluye campos para archivos.</p>
+
+                    <div class="buttons">
+                        <button type="button" class="btn-prev">Anterior</button>
+                        <button type="button" class="btn-next">Siguiente</button>
+                    </div>
+
+                </section>
+
+                <!-- Paso 3: resumen editable y confirmación antes de guardar en PostgreSQL. -->
+                <section class="form-step">
+                        <h2>Confirmación</h2>
+                    <p>Revise la información ingresada antes de enviar la solicitud.</p>
+                    <dl class="review-grid full-width" id="review-summary"></dl>
+
+                    <!-- La confirmación es obligatoria antes de enviar los datos al backend. -->
+                    <label class="confirmation full-width">
+                        <input type="checkbox" name="confirmacion" required />
+                        Confirmo que la información proporcionada es correcta.
+                    </label>
+
+                    <p class="submit-status full-width" id="submit-status" role="status" aria-live="polite"></p>
+
+                    <div class="buttons">
+                        <button type="button" class="btn-prev">Anterior</button>
+                        <button type="submit" class="btn-submit">Enviar solicitud</button>
+                    </div>
+                </section>
+            </form>
+        </main>
+        <!-- Controla los pasos, el resumen, las especialidades y el envío de la solicitud. -->
+        <script src="JS/matricula.js"></script>
+    </body>
+</html>

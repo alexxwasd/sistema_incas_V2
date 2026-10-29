@@ -1,0 +1,237 @@
+/* Reglas globales para que los tamaños y márgenes sean predecibles. */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Fondo y tarjeta central de la pantalla de inicio. */
+body {
+    min-height: 100vh;
+    min-height: 100svh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background: linear-gradient(135deg, #0f172a, #152b32);
+}
+
+.container {
+    width: min(100%, 700px);
+    padding: 32px clamp(24px, 6vw, 64px) 36px;
+    background-color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    border-radius: 24px;
+    box-shadow: 0 24px 60px rgba(3, 12, 27, 0.35);
+}
+
+/* Tamaño y alineación de los logotipos institucionales. */
+.logo_INCAS,
+.logo_MINED {
+    display: block;
+    object-fit: contain;
+}
+
+.logo_INCAS {
+    width: 90px;
+    height: 90px;
+}
+
+.logo_MINED {
+    width: 180px;
+    height: 90px;
+}
+
+.container > .logo_INCAS,
+.container > .logo_MINED {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.container > .logo_MINED {
+    float: right;
+}
+
+/* Título y campos del formulario de acceso. */
+h1 {
+    clear: both;
+    padding-top: 24px;
+    margin-bottom: 28px;
+    color: #176b39;
+    font-size: clamp(28px, 5vw, 38px);
+    line-height: 1.2;
+    text-align: center;
+}
+
+/* Botones de inicio de sesión y enlace a la matrícula. */
+.login-form {
+    width: 100%;
+    max-width: 480px;
+    margin: 0 auto;
+}
+
+.login-status {
+    display: block;
+    margin-top: 12px;
+    color: #315642;
+    font-size: 14px;
+    line-height: 1.5;
+    text-align: center;
+}
+
+.login-status:empty {
+    display: none;
+}
+
+.login-status.error {
+    color: #9a2f2f;
+}
+
+.login-status.success {
+    color: #176b39;
+}
+
+.input-group + .input-group {
+    margin-top: 18px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    color: #24543a;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+input,
+select {
+    display: block;
+    width: 100%;
+    height: 48px;
+    padding: 0 16px;
+    border: 1px solid #dce5df;
+    border-radius: 12px;
+    outline: none;
+    background-color: #f5f8f6;
+    color: #17251d;
+    font-size: 16px;
+    transition: border-color 160ms ease, box-shadow 160ms ease;
+}
+
+input:focus,
+select:focus {
+    border-color: #27834c;
+    box-shadow: 0 0 0 3px rgba(39, 131, 76, 0.14);
+}
+
+button {
+    display: block;
+    width: 100%;
+    min-height: 48px;
+    border: 0;
+    border-radius: 12px;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 160ms ease, transform 160ms ease;
+}
+
+button:hover {
+    transform: translateY(-1px);
+}
+
+.login-button {
+    margin-top: 28px;
+    background-color: #16803a;
+}
+
+.login-button:hover {
+    background-color: #116b30;
+}
+
+.matricula-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.matricula-text {
+    width: 100%;
+    color: #315642;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.4;
+    text-align: center;
+}
+
+.matricula-wrapper > a.Matricula {
+    display: flex;
+    background-color: #123e27;
+    align-items: center;
+    justify-content: center;
+    min-height: 48px;
+    width: 100%;
+    margin: 0 auto;
+    border-radius: 12px;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background-color 160ms ease, transform 160ms ease;
+}
+
+.Matricula:hover {
+    background-color: #0c321e;
+    transform: translateY(-1px);
+}
+
+/* Ajustes de presentación para teléfonos y pantallas de poca altura. */
+@media (max-width: 480px) {
+    body {
+        padding: 16px;
+    }
+
+    .container {
+        padding: 22px 20px 24px;
+        border-radius: 20px;
+    }
+
+    .logo_INCAS {
+        width: 68px;
+        height: 68px;
+    }
+
+    .logo_MINED {
+        width: 132px;
+        height: 68px;
+    }
+
+    h1 {
+        padding-top: 18px;
+        margin-bottom: 22px;
+    }
+
+    .input-group + .input-group {
+        margin-top: 14px;
+    }
+
+    .login-button {
+        margin-top: 22px;
+    }
+
+    .matricula-wrapper {
+        gap: 8px;
+        margin-top: 16px;
+    }
+}
+
+@media (max-height: 650px) {
+    /* En pantallas bajas se permite desplazar en lugar de centrar una tarjeta alta. */
+    body {
+        align-items: flex-start;
+    }
+}
