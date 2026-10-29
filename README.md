@@ -3,11 +3,12 @@
 ## Backend y PostgreSQL
 
 1. Instala las dependencias con `npm install`.
-2. Crea una base de datos PostgreSQL y ejecuta en ella las sentencias DDL del esquema compartido para este proyecto.
-3. Ejecuta una sola vez y en orden las migraciones `database/migrations/001_paneles.sql`, `database/migrations/002_credenciales_iniciales.sql`, `database/migrations/003_dui_sin_guion.sql` y `database/migrations/004_anio_lectivo.sql` en esa base. En `psql`, desde la raíz del proyecto, ejecuta cada una con `\i database/migrations/<archivo>.sql`. Las migraciones posteriores habilitan el cambio obligatorio de contraseña, normalizan los DUI y dejan el año lectivo con un nombre de columna ASCII.
-4. Copia `.env.example` a `.env` y configura los datos reales de conexión. Sustituye `SESSION_SECRET` por una cadena aleatoria larga y privada. `.env` no debe compartirse ni subirse al repositorio.
-5. Inicia el servidor con `npm start` o en desarrollo con `npm run dev`.
-6. Abre `http://localhost:3000`. La API comprueba la conexión al iniciar; `GET /api/health` permite verificarla después.
+2. Crea una base de datos PostgreSQL.
+3. Para una base nueva, ejecuta una sola vez `database/schema_completo.sql`; este archivo ya contiene el esquema actual y los catálogos iniciales. No ejecutes también las migraciones sobre esa base.
+4. Si ya tienes una base creada con el DDL original, no ejecutes `schema_completo.sql`: aplica una sola vez y en orden las migraciones `database/migrations/001_paneles.sql` a `004_anio_lectivo.sql`. En `psql`, desde la raíz, ejecuta `\i database/migrations/<archivo>.sql` para cada migración.
+5. Copia `.env.example` a `.env` y configura los datos reales de conexión. Sustituye `SESSION_SECRET` por una cadena aleatoria larga y privada. `.env` no debe compartirse ni subirse al repositorio.
+6. Inicia el servidor con `npm start` o en desarrollo con `npm run dev`.
+7. Abre `http://localhost:3000`. La API comprueba la conexión al iniciar; `GET /api/health` permite verificarla después.
 
 Se puede usar `DATABASE_URL` en lugar de `DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USER` y `DB_PASSWORD`. Para una conexión que requiera TLS, configura `DB_SSL=true` y usa un certificado válido.
 
@@ -32,5 +33,6 @@ Al revisar una solicitud pendiente, secretaría ingresa el NIE y selecciona una 
 - `database/migrations/002_credenciales_iniciales.sql`: habilita cambio obligatorio de contraseña y credenciales por DUI.
 - `database/migrations/003_dui_sin_guion.sql`: normaliza usuarios existentes de docentes y encargados para guardar el DUI sin guion.
 - `database/migrations/004_anio_lectivo.sql`: normaliza el nombre de la columna del año lectivo en `asignacion_docente`.
+- `database/schema_completo.sql`: esquema consolidado para instalar el sistema desde cero, incluyendo cambios de las cuatro migraciones y catálogos iniciales.
 
 Cada panel ya tiene su propio HTML (`panel_admin.html`, `panel_docente.html`, `panel_alumno.html` y `panel_encargado.html`). Se mantiene un solo script de navegación para ellos porque comparten el mismo comportamiento; separarlo duplicaría lógica. `package.json` se describe en esta guía porque el formato JSON no admite comentarios.
