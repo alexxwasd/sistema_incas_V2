@@ -192,4 +192,39 @@ WHERE NOT EXISTS (
     WHERE lower(existing.nombre_materia) = lower(catalog.nombre_materia)
 );
 
+-- Cuenta inicial de secretaría. La contraseña temporal es el DUI sin guion;
+-- debe cambiarse obligatoriamente durante el primer inicio de sesión.
+WITH secretary_role AS (
+    SELECT id_rol
+    FROM roles
+    WHERE lower(nombre_rol) IN ('secretaria', 'secretaría')
+    ORDER BY id_rol
+    LIMIT 1
+),
+created_user AS (
+    INSERT INTO usuarios (
+        correo, contrasena, id_rol, estado, debe_cambiar_contrasena
+    )
+    SELECT
+        'admin@incas.edu.sv',
+        '$2b$12$7porbOICwUSBIwlzhY/.u.DRWQIK34ZBXzKLH9mgNUxxgIyePD/8u',
+        secretary_role.id_rol,
+        TRUE,
+        TRUE
+    FROM secretary_role
+    WHERE NOT EXISTS (
+        SELECT 1
+        FROM usuarios
+        WHERE lower(correo) = lower('admin@incas.edu.sv')
+    )
+    RETURNING id_usuario
+)
+INSERT INTO secretaria (
+    dui_secretaria, nombre, apellido, correo, id_usuario, telefono
+)
+SELECT
+    '08323011-0', 'Carolina', 'Chinchilla', 'admin@incas.edu.sv', id_usuario, '69839087'
+FROM created_user
+ON CONFLICT (dui_secretaria) DO NOTHING;
+
 COMMIT;
